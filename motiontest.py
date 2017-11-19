@@ -19,7 +19,7 @@ def on_callback(channel):
 def off_callback(channel):
 	print("motion off")
 
-GPIO.add_event_detect(7,GPIO.FALLING,callback=on_callback,bouncetime=300)
+#GPIO.add_event_detect(7,GPIO.FALLING,callback=on_callback,bouncetime=300)
 
 frames = 60
 
@@ -51,7 +51,7 @@ def takepics():
     print('Captured %d frames at %.2ffps' % (frames,frames / (finish - start)))
 
 
-takepics()
+#takepics()
 while True:
     try:  
        i=GPIO.input(7)
