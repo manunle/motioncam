@@ -51,6 +51,7 @@ def motion_detected():
 
 camera = picamera.PiCamera()
 camera.resolution = (1640,1232)
+#camera.exposure_mode = "night"
 stream = picamera.PiCameraCircularIO(camera, seconds=30)
 camera.start_recording(stream, format=VideoFormat)
 try:
