@@ -10,6 +10,7 @@ imgHeight    = 1232                                              # Max = 1944
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(7, GPIO.IN)         #Read output from PIR motion sensor
+motioncount = 0
 
 def on_callback(channel):
 	global motionevent
@@ -63,7 +64,8 @@ while True:
           if motsense==0:
               motsense=1
 #              takepics()
-              print "Intruder detected",i
+              motioncount += 1
+              print "Intruder detected",motioncount
           time.sleep(0.1)
    
     except KeyboardInterrupt:  

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import ConfigParser
 import io
 import random
@@ -5,6 +7,7 @@ import picamera
 import RPi.GPIO as GPIO
 import time
 
+print "starting motionvid"
 config = ConfigParser.RawConfigParser()
 ## uncomment this to create the config file
 #config.add_section('Paths')
@@ -19,7 +22,7 @@ config = ConfigParser.RawConfigParser()
 #with open('motionvid.conf','wb') as configfile:
 #    config.write(configfile)
 
-config.read('motionvid.conf')
+config.read('/home/pi/motioncam/motionvid.conf')
 video_directory = config.get('Paths','video_directory')
 MotionPin = int(config.get('Settings','MotionPin'))
 VideoWidth = int(config.get('Settings','VideoWidth'))
@@ -51,7 +54,8 @@ def motion_detected():
 
 camera = picamera.PiCamera()
 camera.resolution = (1640,1232)
-#camera.exposure_mode = "night"
+camera.vflip = True
+camera.exposure_mode = "night"
 stream = picamera.PiCameraCircularIO(camera, seconds=30)
 camera.start_recording(stream, format=VideoFormat)
 try:
