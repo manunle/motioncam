@@ -31,9 +31,9 @@ VideoFileName = config.get('Settings','VideoFileName')
 VideoFormat = config.get('Settings','VideoFormat')
 VideoLength = int(config.get('Settings','VideoLength'))
 AllowRetrigger = (config.get('Settings','AllowRetrigger') == 'yes')
-vFlip = (config.get('Settings','vFlip') == 'no')
-hFlip = (config.get('Settings','hFlip') == 'no')
-expMode = (config.get('Settings','expMode') == 'night')
+vFlip = (config.get('Settings','vFlip'))
+hFlip = (config.get('Settings','hFlip'))
+expMode = (config.get('Settings','expMode'))
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(MotionPin, GPIO.IN)         #Read output from PIR motion sensor
