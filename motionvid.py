@@ -31,6 +31,9 @@ VideoFileName = config.get('Settings','VideoFileName')
 VideoFormat = config.get('Settings','VideoFormat')
 VideoLength = int(config.get('Settings','VideoLength'))
 AllowRetrigger = (config.get('Settings','AllowRetrigger') == 'yes')
+vFlip = (config.get('Settings','vFlip') == 'no')
+hFlip = (config.get('Settings','hFlip') == 'no')
+expMode = (config.get('Settings','expMode') == 'night')
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(MotionPin, GPIO.IN)         #Read output from PIR motion sensor
@@ -54,8 +57,11 @@ def motion_detected():
 
 camera = picamera.PiCamera()
 camera.resolution = (1640,1232)
-camera.vflip = True
-camera.exposure_mode = "night"
+if(vFlip == 'yes'):
+    camera.vflip = True
+if(hFlip == 'yes'):
+    camera.hflip = True
+camera.exposure_mode = expMode
 stream = picamera.PiCameraCircularIO(camera, seconds=30)
 camera.start_recording(stream, format=VideoFormat)
 try:
