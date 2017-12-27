@@ -6,6 +6,7 @@ import random
 import picamera
 import RPi.GPIO as GPIO
 import time
+import os
 
 print "starting motionvid"
 config = ConfigParser.RawConfigParser()
@@ -29,11 +30,29 @@ VideoWidth = int(config.get('Settings','VideoWidth'))
 VideoHeight = int(config.get('Settings','VideoHeight'))
 VideoFileName = config.get('Settings','VideoFileName')
 VideoFormat = config.get('Settings','VideoFormat')
+videobufferlength = int(config.get('Settings','videobufferlength'))
 VideoLength = int(config.get('Settings','VideoLength'))
 AllowRetrigger = (config.get('Settings','AllowRetrigger') == 'yes')
 vFlip = (config.get('Settings','vFlip'))
 hFlip = (config.get('Settings','hFlip'))
 expMode = (config.get('Settings','expMode'))
+lightsOn = (config.get('Settings','lightsOn'))
+lightsOnCmd = (config.get('Settings','lightsOnCmd'))
+
+print "video_directory = ",video_directory
+print "MotionPin = ",MotionPin
+print "VideoWidth = ",VideoWidth
+print "VideoHeight = ",VideoHeight
+print "VideoFileName = ",VideoFileName
+print "VideoFormat = ",VideoFormat
+print "videobufferlength = ",videobufferlength
+print "VideoLength = ",VideoLength
+print "AllowRetrigger = ",AllowRetrigger
+print "vFlip = ",vFlip
+print "hFlip = ",hFlip
+print "expMode = ",expMode
+print "lightsOn = ",lightsOn
+print "lightsOnCmd = ",lightsOnCmd
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(MotionPin, GPIO.IN)         #Read output from PIR motion sensor
@@ -62,12 +81,14 @@ if(vFlip == 'yes'):
 if(hFlip == 'yes'):
     camera.hflip = True
 camera.exposure_mode = expMode
-stream = picamera.PiCameraCircularIO(camera, seconds=30)
+stream = picamera.PiCameraCircularIO(camera, seconds=videobufferlength)
 camera.start_recording(stream, format=VideoFormat)
 try:
     while True:
         camera.wait_recording(1)
         if motion_detected():
+            if(lightsOn == 'yes'):
+               os.system(lightsOnCmd)
             print "Capturing"
             # Keep recording for 10 seconds and only then write the
             # stream to disk
